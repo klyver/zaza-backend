@@ -22,7 +22,7 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
-            title: 'Boot React',
+            title: 'Zaza',
             template: path.join(__dirname, 'assets/index-template.html')
         })
     ],

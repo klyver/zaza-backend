@@ -20,7 +20,6 @@ public class Category extends BaseIdentifiable {
     @Column(nullable = false)
     private BigDecimal displayOrder;
     @ManyToOne(optional = true)
-    @JsonIgnore
     private Category parent;
     @OneToMany(mappedBy="parent")
     @OrderBy("displayOrder ASC")

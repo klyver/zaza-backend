@@ -29,7 +29,40 @@ INSERT INTO Category (name, parent_id, displayOrder) VALUES
   ('Wallets', 7, 2),
   ('Belts', 7, 3),
   ('Sunglasses', 7, 4),
-  ('Umbrellas', 7, 5);
+  ('Umbrellas', 7, 5),
+  ('Bedroom', 1, 1),
+  ('Kitchen', 1, 2),
+  ('Beds', 13, 1),
+  ('Linen', 13, 2),
+  ('Cutlery', 14, 1),
+  ('Plates', 14, 2),
+  ('Clothes', 2, 2),
+  ('Pants', 19, 1),
+  ('Tops', 19, 2),
+  ('Clothes', 3, 2),
+  ('Accessories', 3, 1),
+  ('Shirts', 22, 1),
+  ('Trousers', 22, 2),
+  ('Belts', 23, 1),
+  ('Watches', 23, 2),
+  ('Clothes', 4, 1),
+  ('Toys', 4, 2),
+  ('0-3 Year', 28, 1),
+  ('4-7 Year', 28, 2),
+  ('Books', 29, 1),
+  ('Games', 29, 2),
+  ('Supplements', 5, 1),
+  ('Senior Home Care', 5, 2),
+  ('Protein powder', 34, 1),
+  ('Vitamins', 34, 2),
+  ('Bathroom & Bathing', 35, 1),
+  ('Exercise & Fitness', 35, 2),
+  ('Kidsfood', 6, 1),
+  ('Specialties', 6, 2),
+  ('Milk replacement', 40, 1),
+  ('Snacks', 40, 2),
+  ('Fish', 41, 1),
+  ('Fruits', 41, 2);
 
 INSERT INTO ProductOption (label, displayOrder) VALUES
   ('Color', 1), ('Size', 2);
@@ -56,9 +89,9 @@ VALUES
     'Elvang summer rocks',
     'SUMMER ROCKS cushion collection is made of 100% Peruvian pima cotton. Pima cotton is a species of cotton known for its extraordinary softness and durability. The cotton originates from Peru, even now spread to other places. The weaving style of Summer Rocks gives the textiles an expression as if they were made of small stones - thereby the term "rocks"',
     'SUMMER ROCKS cushion collection is made of 100% Peruvian pima cotton. Pima cotton is a species of cotton known for its extraordinary softness and durability. The cotton originates from Peru, even now spread to other places. The weaving style of Summer Rocks gives the textiles an expression as if they were made of small stones - thereby the term "rocks"',
-    1,
+    15,
     FALSE ),
-  ('EH4532', 2, 'A product name', 'a description', 'a longer description', 1, FALSE);
+  ('EH4532', 2, 'A product name', 'a description', 'a longer description', 15, FALSE);
 
 INSERT INTO ProductOptionXref (product_id, productOption_id) VALUES (1, 1), (1, 2);
 INSERT INTO Sku (sourceId, product_id, defaultSku, width, height, depth, weight, price, quantityInStock) VALUES

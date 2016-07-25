@@ -76,7 +76,6 @@ public class ProductController {
         zaza.model.catalog.Product product = new zaza.model.catalog.Product();
         product.setManufacturer(user.getManufacturer());
         updateProductWithResponseBodyData(product, responseBody, user);
-        product.setCategory(categoryRepository.findOne(1L));
         final zaza.model.catalog.Product savedProduct = productRepository.save(product);
         addSkusAndProductOptions(savedProduct, responseBody);
         return savedProduct.getId().toString();
@@ -144,5 +143,7 @@ public class ProductController {
         } else {
             product.setApproved(false);
         }
+
+        product.setCategory(categoryRepository.findOne(Long.parseLong(responseBody.getCategoryId())));
     }
 }

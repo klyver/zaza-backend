@@ -2,7 +2,7 @@
 
 ### Running the backend
 
-Run the main methion in the `BootReactApplication` class.
+Run the main methion in the `BootZazaApplication` class.
 
 ### Running the frontend
 

@@ -1,7 +1,28 @@
 import React, {Component} from 'react';
 import {NumberInput, TextInput, TextArea, Dropdown, Checkboxes} from './inputs';
 
-export default ({product, productOptions, updateProduct, admin, errorMessage}) => {
+export default ({product, productOptions, categories, updateProduct, admin, errorMessage}) => {
+
+    let mainCategory = null;
+    let subCategory = null;
+    let subSubCategory = null;
+
+    for (const main of categories) {
+        for (const sub of main.children) {
+            for (const subSub of sub.children) {
+                if (subSub.id === product.categoryId || product.categoryId == null) {
+                    mainCategory = main;
+                    subCategory = sub;
+                    subSubCategory = subSub;
+                }
+            }
+        }
+    }
+
+    const mainCategoryOptions = categories;
+    const subCategoryOptions = mainCategory != null ? mainCategory.children : null;
+    const subSubCategoryOptions = subCategory != null ? subCategory.children : null;
+
     return (
         <div>
             {errorMessage ? <div style={{color: 'RED'}}>{errorMessage}</div> : null}
@@ -50,6 +71,39 @@ export default ({product, productOptions, updateProduct, admin, errorMessage}) =
                 }}/>
             </div> : null}
 
+
+            <h3>Categories</h3>
+            <Dropdown
+                value={mainCategory}
+                options={mainCategoryOptions}
+                valueToDisplayString={(category) => (category.name)}
+                onChange={(category) => {
+                    product.categoryId = category.children[0].children[0].id;
+                    updateProduct(product);
+                }}
+            />
+            <Dropdown
+                value={subCategory}
+                options={subCategoryOptions}
+                valueToDisplayString={(category) => (category.name)}
+                onChange={(category) => {
+                    product.categoryId = category.children[0].id;
+                    updateProduct(product);
+                }}
+            />
+            <Dropdown
+                value={subSubCategory}
+                options={subSubCategoryOptions}
+                valueToDisplayString={(category) => (category.name)}
+                onChange={(category) => {
+                    product.categoryId = category.id;
+                    updateProduct(product);
+                }}
+            />
+
+            <h3>Images</h3>
+            TODO
+
             <h3>ProductOptions</h3>
             <Checkboxes
                 value={product.productOptions}
@@ -61,7 +115,6 @@ export default ({product, productOptions, updateProduct, admin, errorMessage}) =
                 }}
                 disabled={product.skus.length > 0}
             />
-
 
             <h3>Skus</h3>
             <table>

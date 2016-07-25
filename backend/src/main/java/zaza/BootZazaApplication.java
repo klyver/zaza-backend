@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.session.SessionAutoConfiguration;
 
 @SpringBootApplication(scanBasePackages = "zaza", exclude = SessionAutoConfiguration.class)
-public class BootReactApplication {
+public class BootZazaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BootReactApplication.class, args);
+        SpringApplication.run(BootZazaApplication.class, args);
     }
 }

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {fetchProduct} from '../../reducers/product';
 import {fetchProductOptionList} from '../../reducers/productOptionList';
 import {updateProductAction} from '../../reducers/updatingProduct';
+import {fetchCategoriesAction} from '../../reducers/categories';
 import {Link} from 'react-router';
 import ProductEditor from '../components/ProductEditor';
 
@@ -15,6 +16,7 @@ const ProductEditPage = class extends Component {
     componentDidMount() {
         this.props.fetchProduct(this.props.params.productId);
         this.props.fetchProductOptionList();
+        this.props.fetchCategoriesAction();
     }
 
     render() {
@@ -34,6 +36,7 @@ const ProductEditPage = class extends Component {
                 <ProductEditor
                     product={this.state.product}
                     productOptions={this.props.productOptions}
+                    categories={this.props.categories}
                     updateProduct={(product) => {
                         this.setState({
                             product: product
@@ -55,8 +58,9 @@ const ProductEditPage = class extends Component {
 export default connect(
     state => ({
         product: state.product.product,
-        loading: state.product.loading || state.productOptionList.loading,
+        loading: state.product.loading || state.productOptionList.loading || state.categories.loading,
         productOptions: state.productOptionList.productOptions,
+        categories: state.categories.categories,
         admin: state.authentication.admin,
         updatingProduct: state.updatingProduct.loading,
         errorMessage: state.updatingProduct.errorMessage
@@ -64,6 +68,7 @@ export default connect(
     {
         fetchProduct,
         fetchProductOptionList,
+        fetchCategoriesAction,
         updateProductAction
     }
 )(ProductEditPage);

@@ -19,6 +19,7 @@ public class Product {
     private String longDescription;
     private String longDescriptionMandarin;
 
+    private String categoryId;
     private List<Sku> skus;
     private List<ProductOption> productOptions;
 
@@ -35,6 +36,7 @@ public class Product {
         this.description = product.getDescription();
         this.longDescription = product.getLongDescription();
         this.longDescriptionMandarin = product.getLongDescriptionMandarin();
+        this.categoryId = product.getCategory().getId().toString();
         this.skus = product.getSkus().stream().map(Sku::new).collect(Collectors.toList());
         this.productOptions = product.getProductOptions().stream().map((ProductOptionXref xref) -> new ProductOption(xref.getProductOption())).collect(Collectors.toList());
     }
@@ -133,5 +135,13 @@ public class Product {
 
     public void setProductOptions(List<ProductOption> productOptions) {
         this.productOptions = productOptions;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

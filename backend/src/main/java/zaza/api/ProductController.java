@@ -15,7 +15,9 @@ import zaza.repository.*;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -91,25 +93,85 @@ public class ProductController {
 
         User user = (User) session.getAttribute("user");
         zaza.model.catalog.Product product = productRepository.findOne(Long.parseLong(productId));
+        updateProductWithResponseBodyData(product, responseBody, user);
+        productRepository.save(product);
 
-        // delete all existing references. This is extremely inefficient, but it works for now
-        productOptionXrefRepository.delete(product.getProductOptions());
-        List<SkuProductOptionValueXref> skuProductOptionValueXrefs = product.getSkus().stream()
+        //////////////////////////////////////////////
+        Map<ProductOptionXref, Boolean> foundProductOptions = new HashMap<>();
+        for (ProductOptionXref productOptionXref : product.getProductOptions()) {
+            foundProductOptions.put(productOptionXref, false);
+        }
+        for (ProductOption productOption : responseBody.getProductOptions()) {
+            zaza.model.catalog.ProductOption modelProductOption = productOptionRepository.findOne(Long.parseLong(productOption.getId()));
+            List<ProductOptionXref> productOptionXref = productOptionXrefRepository.findByProductAndProductOption(product, modelProductOption);
+            if (! productOptionXref.isEmpty()) {
+                foundProductOptions.put(productOptionXref.get(0), true);
+            } else {
+                productOptionXrefRepository.save(new ProductOptionXref(product, modelProductOption));
+            }
+        }
+
+        productOptionXrefRepository.delete(foundProductOptions.entrySet().stream()
+                .filter(entry -> !entry.getValue())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList()));
+        //////////////////////////////////////////////
+
+
+        //////////////////////////////////////////////
+        List<SkuProductOptionValueXref> existingSkuProductOptionValueXrefs = product.getSkus().stream()
                 .map(Sku::getProductOptionValueXrefs)
                 .flatMap(Set::stream)
                 .collect(Collectors.toList());
-        skuProductOptionValueXrefRepository.delete(skuProductOptionValueXrefs);
+        Map<SkuProductOptionValueXref, Boolean> foundSkuProductOptionValueXrefs = new HashMap<>();
+        for (SkuProductOptionValueXref existingSkuProductOptionValueXref : existingSkuProductOptionValueXrefs) {
+            foundSkuProductOptionValueXrefs.put(existingSkuProductOptionValueXref, false);
+        }
+        Map<Sku, Boolean> foundSkus = new HashMap<>();
         for (Sku sku : product.getSkus()) {
+            foundSkus.put(sku, false);
+        }
+
+        for (zaza.api.jsonmodel.Sku jsonSku : responseBody.getSkus()) {
+            if (jsonSku.getId() != null) {
+                Sku existingSku = skuRepository.findOne(Long.parseLong(jsonSku.getId()));
+                if (existingSku != null) {
+                    foundSkus.put(existingSku, true);
+                }
+            }
+
+            Sku sku = jsonSku.toDomainModel();
+            sku.setProduct(product);
+            skuRepository.save(sku);
+
+            for (ProductOptionValue productOptionValueJson : jsonSku.getProductOptionValues()) {
+                zaza.model.catalog.ProductOptionValue productOptionValue = productOptionValueRepository.findOne(Long.parseLong(productOptionValueJson.getId()));
+                List<SkuProductOptionValueXref> existingSkuProductOptionValueXref = skuProductOptionValueXrefRepository.findBySkuAndProductOptionValue(sku, productOptionValue);
+                if (!existingSkuProductOptionValueXref.isEmpty()) {
+                    foundSkuProductOptionValueXrefs.put(existingSkuProductOptionValueXref.get(0), true);
+                } else {
+                    skuProductOptionValueXrefRepository.save(new SkuProductOptionValueXref(sku, productOptionValue));
+                }
+            }
+        }
+        skuProductOptionValueXrefRepository.delete(foundSkuProductOptionValueXrefs.entrySet().stream()
+                .filter(entry -> !entry.getValue())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList()));
+
+        List<Sku> toDelete = foundSkus.entrySet().stream()
+                .filter(entry -> !entry.getValue())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        for (Sku sku : toDelete) {
             List<OrderItem> ordersForSku = orderItemRepository.findBySku(sku);
             if (!ordersForSku.isEmpty()) {
                 throw new IllegalArgumentException("cannot delete sku that has orders");
             }
         }
-        skuRepository.delete(product.getSkus());
+        skuRepository.delete(toDelete);
+        ////////////////////////////////////////
 
-        updateProductWithResponseBodyData(product, responseBody, user);
-        final zaza.model.catalog.Product savedProduct = productRepository.save(product);
-        addSkusAndProductOptions(savedProduct, responseBody);
     }
 
     private void addSkusAndProductOptions(zaza.model.catalog.Product product, Product responseBody) {

@@ -25,9 +25,9 @@ const ProductEditPage = class extends Component {
         };
 
         if (this.props.updatingProduct) {
-            return <h1>Updating product</h1>
+            return (<h1>Updating product</h1>)
         } else if (this.props.loading || !this.state.product) {
-            return <h1>Loading...</h1>
+            return (<h1>Loading...</h1>)
         }
 
         return (
@@ -45,11 +45,15 @@ const ProductEditPage = class extends Component {
                     admin={this.props.admin}
                     errorMessage={this.props.errorMessage}
                 />
-                <button onClick={ (e) => {
-                    e.preventDefault();
-                    this.props.updateProductAction(this.state.product);
-                }}
-                >Update</button>
+                <button
+                    onClick={ (e) => {
+                        e.preventDefault();
+                        this.props.updateProductAction(this.state.product);
+                    }}
+                    style={{marginTop: '30px'}}
+                >
+                    Update
+                </button>
             </div>
         );
     }

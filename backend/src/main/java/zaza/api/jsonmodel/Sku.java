@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Sku {
+    private String id;
     private String sourceId;
     private boolean defaultSku;
     private Dimension dimension;
@@ -21,6 +22,7 @@ public class Sku {
     }
 
     public Sku(zaza.model.catalog.Sku sku) {
+        this.id = sku.getId().toString();
         this.sourceId = sku.getSourceId();
         this.defaultSku = sku.isDefaultSku();
         this.dimension = sku.getDimension();
@@ -40,7 +42,16 @@ public class Sku {
     }
 
     public zaza.model.catalog.Sku toDomainModel() {
-        return new zaza.model.catalog.Sku(sourceId, defaultSku, new Dimension(dimension.getWidth(), dimension.getHeight(), dimension.getDepth()), weight, price, quantityInStock);
+        Long idAsLong = id != null ? Long.parseLong(id) : null;
+        return new zaza.model.catalog.Sku(idAsLong, sourceId, defaultSku, new Dimension(dimension.getWidth(), dimension.getHeight(), dimension.getDepth()), weight, price, quantityInStock);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSourceId() {

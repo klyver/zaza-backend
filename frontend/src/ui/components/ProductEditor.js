@@ -7,6 +7,10 @@ export default ({product, productOptions, categories, updateProduct, admin, erro
     let subCategory = null;
     let subSubCategory = null;
 
+    if (categories == null) {
+        throw new Error(`categories was null or undefined, categories=${categories}`);
+    }
+
     for (const main of categories) {
         for (const sub of main.children) {
             for (const subSub of sub.children) {

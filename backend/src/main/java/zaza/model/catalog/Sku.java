@@ -34,7 +34,8 @@ public class Sku extends BaseIdentifiable {
     public Sku() {
     }
 
-    public Sku(String sourceId, boolean defaultSku, Dimension dimension, BigDecimal weight, BigDecimal price, Long quantityInStock) {
+    public Sku(Long id, String sourceId, boolean defaultSku, Dimension dimension, BigDecimal weight, BigDecimal price, Long quantityInStock) {
+        this.id = id;
         this.sourceId = sourceId;
         this.defaultSku = defaultSku;
         this.dimension = dimension;

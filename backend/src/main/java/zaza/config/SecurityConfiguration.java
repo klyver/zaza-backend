@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/session", "/api/categories/**").permitAll()
+                .antMatchers("/api/session").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/orderItems/**").hasRole(Role.MANUFACTURER.toString())
                 .antMatchers(HttpMethod.POST, "/api/products").hasAnyRole(Role.MANUFACTURER.toString())

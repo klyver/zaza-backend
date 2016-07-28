@@ -15,7 +15,7 @@ const OrdersPage = class extends Component {
 
         return (
             <div>
-                <h1>Orders</h1>
+                <h1>Order Items</h1>
                 <table>
                     <thead>
                         <tr>

@@ -36,6 +36,7 @@ public class Product {
         this.name = product.getName();
         this.nameMandarin = product.getNameMandarin();
         this.description = product.getDescription();
+        this.descriptionMandarin = product.getDescriptionMandarin();
         this.longDescription = product.getLongDescription();
         this.longDescriptionMandarin = product.getLongDescriptionMandarin();
         this.categoryId = product.getCategory().getId().toString();

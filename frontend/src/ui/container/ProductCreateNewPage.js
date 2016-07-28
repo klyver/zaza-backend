@@ -64,7 +64,8 @@ export default connect(
             productOptions: [],
             skus: [],
             approved: false,
-            categoryId: null
+            categoryId: null,
+            productAttributes: []
         },
         loading: state.products.loading || !state.categories || !state.productOptions,
         productOptions: state.productOptions,

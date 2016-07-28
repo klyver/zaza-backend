@@ -20,6 +20,15 @@ public class ProductAttribute extends BaseIdentifiable {
     @ManyToOne(optional=false)
     private Product product;
 
+    public ProductAttribute() {
+    }
+
+    public ProductAttribute(String name, String value, Product product) {
+        this.name = name;
+        this.value = value;
+        this.product = product;
+    }
+
     public Long getId() {
         return id;
     }

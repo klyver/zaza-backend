@@ -144,8 +144,45 @@ export default ({product, productOptions, categories, updateProduct, admin, erro
                 }}
             />
 
-            <h3>Images</h3>
-            TODO
+            <h3>Attributes</h3>
+            {
+                product.productAttributes.map((attribute, index) => (
+                    <div key={index}>
+                        <TextInput
+                            value={attribute.name}
+                            onChange={(newValue) => {
+                                product.productAttributes[index].name = newValue;
+                                updateProduct(product);
+                            }}
+                            size={30}
+                        />
+                        <TextInput
+                            value={attribute.value}
+                            onChange={(newValue) => {
+                                product.productAttributes[index].value = newValue;
+                                updateProduct(product);
+                            }}
+                        />
+                        <button
+                            onClick={() => {
+                                product.productAttributes.splice(index, 1);
+                                updateProduct(product);
+                            }}>
+                            Delete
+                        </button>
+                    </div>
+                ))
+            }
+            <button onClick={() => {
+                product.productAttributes.push({
+                    name: '',
+                    value: ''
+                });
+                updateProduct(product);
+            }}>
+                Add attribute
+            </button>
+
 
             <h3>ProductOptions</h3>
             <Checkboxes
@@ -265,8 +302,11 @@ export default ({product, productOptions, categories, updateProduct, admin, erro
                 Add Sku
             </button>
 
+            <h3>Images</h3>
+            TODO
+
             {admin ?
-                <div>approved:
+                <div><h3>Approved</h3>
                     <Dropdown
                         value={product.approved}
                         onChange={(approved) => {
@@ -279,6 +319,7 @@ export default ({product, productOptions, categories, updateProduct, admin, erro
                 </div>
                 : null
             }
+            <hr/>
         </div>
     );
 };

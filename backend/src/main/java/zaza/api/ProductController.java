@@ -7,6 +7,7 @@ import zaza.api.jsonmodel.ProductOption;
 import zaza.api.jsonmodel.ProductOptionValue;
 import zaza.model.Role;
 import zaza.model.User;
+import zaza.model.catalog.ProductAttribute;
 import zaza.model.catalog.ProductOptionXref;
 import zaza.model.catalog.Sku;
 import zaza.model.catalog.SkuProductOptionValueXref;
@@ -41,6 +42,8 @@ public class ProductController {
     private CategoryRepository categoryRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private ProductAttributeRepository productAttributeRepository;
 
 
     @RequestMapping(value = "/api/products", method = RequestMethod.GET)
@@ -79,6 +82,7 @@ public class ProductController {
         product.setManufacturer(user.getManufacturer());
         updateProductWithResponseBodyData(product, responseBody, user);
         final zaza.model.catalog.Product savedProduct = productRepository.save(product);
+        updateProductAttributes(savedProduct, responseBody);
         addSkusAndProductOptions(savedProduct, responseBody);
         return new Product(productRepository.findOne(savedProduct.getId()));
     }
@@ -94,7 +98,9 @@ public class ProductController {
         User user = (User) session.getAttribute("user");
         zaza.model.catalog.Product product = productRepository.findOne(Long.parseLong(productId));
         updateProductWithResponseBodyData(product, responseBody, user);
-        productRepository.save(product);
+        product = productRepository.save(product);
+        updateProductAttributes(product, responseBody);
+
 
         //////////////////////////////////////////////
         Map<ProductOptionXref, Boolean> foundProductOptions = new HashMap<>();
@@ -206,7 +212,16 @@ public class ProductController {
         } else {
             product.setApproved(false);
         }
-
         product.setCategory(categoryRepository.findOne(Long.parseLong(responseBody.getCategoryId())));
+    }
+
+    private void updateProductAttributes(zaza.model.catalog.Product product, Product responseBody) {
+        productAttributeRepository.delete(product.getProductAttributes().values());
+        product.getProductAttributes().clear();
+        for (zaza.api.jsonmodel.ProductAttribute jsonProductAttribute : responseBody.getProductAttributes()) {
+            ProductAttribute productAttribute = new ProductAttribute(jsonProductAttribute.getName(), jsonProductAttribute.getValue(), product);
+            productAttribute = productAttributeRepository.save(productAttribute);
+            product.getProductAttributes().put(jsonProductAttribute.getName(), productAttribute);
+        }
     }
 }

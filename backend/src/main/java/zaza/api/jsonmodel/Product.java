@@ -2,6 +2,7 @@ package zaza.api.jsonmodel;
 
 import zaza.model.catalog.ProductOptionXref;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class Product {
     private String longDescriptionMandarin;
 
     private String categoryId;
+    private List<ProductAttribute> productAttributes;
     private List<Sku> skus;
     private List<ProductOption> productOptions;
 
@@ -37,6 +39,12 @@ public class Product {
         this.longDescription = product.getLongDescription();
         this.longDescriptionMandarin = product.getLongDescriptionMandarin();
         this.categoryId = product.getCategory().getId().toString();
+        this.productAttributes = product.getProductAttributes().values().stream().map(ProductAttribute::new).sorted(new Comparator<ProductAttribute>() {
+            @Override
+            public int compare(ProductAttribute o1, ProductAttribute o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        }).collect(Collectors.toList());
         this.skus = product.getSkus().stream().map(Sku::new).collect(Collectors.toList());
         this.productOptions = product.getProductOptions().stream().map((ProductOptionXref xref) -> new ProductOption(xref.getProductOption())).collect(Collectors.toList());
     }
@@ -143,5 +151,13 @@ public class Product {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public List<ProductAttribute> getProductAttributes() {
+        return productAttributes;
+    }
+
+    public void setProductAttributes(List<ProductAttribute> productAttributes) {
+        this.productAttributes = productAttributes;
     }
 }

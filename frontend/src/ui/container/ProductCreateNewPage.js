@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchProductOptionList} from '../../reducers/productOptionList';
+import {fetchProductOptionsAction} from '../../reducers/productOptions';
 import {fetchCategoriesAction} from '../../reducers/categories';
-import {createProduct} from '../../reducers/creatingProduct';
+import {createProductAction} from '../../reducers/products';
 import {Link} from 'react-router';
 import ProductEditor from '../components/ProductEditor';
 
@@ -13,7 +13,7 @@ const ProductCreateNewPage = class extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchProductOptionList();
+        this.props.fetchProductOptionsAction();
         this.props.fetchCategoriesAction();
     }
 
@@ -22,9 +22,7 @@ const ProductCreateNewPage = class extends Component {
             product: this.props.product
         };
 
-        if (this.props.creatingProduct) {
-            return <h1>Creating product...</h1>
-        } else if (this.props.loading || !this.props.categories) {
+        if (this.props.loading) {
             return <h1>Loading...</h1>
         }
 
@@ -45,7 +43,7 @@ const ProductCreateNewPage = class extends Component {
                 />
                 <button onClick={ (e) => {
                     e.preventDefault();
-                    this.props.createProduct(this.state.product);
+                    this.props.createProductAction(this.state.product);
                 }}
                 >Create</button>
             </div>
@@ -68,17 +66,16 @@ export default connect(
             approved: false,
             categoryId: null
         },
-        loading: state.productOptionList.loading || state.categories.loading,
-        productOptions: state.productOptionList.productOptions,
-        categories: state.categories.categories,
+        loading: state.products.loading || !state.categories || !state.productOptions,
+        productOptions: state.productOptions,
+        categories: state.categories,
         admin: state.authentication.admin,
-        creatingProduct: state.creatingProduct.loading,
-        errorMessage: state.creatingProduct.errorMessage
+        errorMessage: state.products.errorMessage
     }),
     {
         fetchCategoriesAction,
-        fetchProductOptionList,
-        createProduct
+        fetchProductOptionsAction,
+        createProductAction
     }
 )(ProductCreateNewPage);
 

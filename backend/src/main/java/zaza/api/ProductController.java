@@ -66,7 +66,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/api/products", method = RequestMethod.POST)
-    public String createProduct(@RequestBody Product responseBody, HttpSession session) {
+    public Product createProduct(@RequestBody Product responseBody, HttpSession session) {
         if (responseBody.getSkus().stream()
                 .filter(zaza.api.jsonmodel.Sku::isDefaultSku)
                 .collect(Collectors.toList()).size() != 1) {
@@ -80,11 +80,11 @@ public class ProductController {
         updateProductWithResponseBodyData(product, responseBody, user);
         final zaza.model.catalog.Product savedProduct = productRepository.save(product);
         addSkusAndProductOptions(savedProduct, responseBody);
-        return savedProduct.getId().toString();
+        return new Product(productRepository.findOne(savedProduct.getId()));
     }
 
     @RequestMapping(value = "/api/products/{productId}", method = RequestMethod.PUT)
-    public void updateProduct(@PathVariable String productId, @RequestBody Product responseBody, HttpSession session) {
+    public Product updateProduct(@PathVariable String productId, @RequestBody Product responseBody, HttpSession session) {
         if (responseBody.getSkus().stream()
                 .filter(zaza.api.jsonmodel.Sku::isDefaultSku)
                 .collect(Collectors.toList()).size() != 1) {
@@ -172,6 +172,7 @@ public class ProductController {
         skuRepository.delete(toDelete);
         ////////////////////////////////////////
 
+        return new Product(productRepository.findOne(Long.parseLong(productId)));
     }
 
     private void addSkusAndProductOptions(zaza.model.catalog.Product product, Product responseBody) {

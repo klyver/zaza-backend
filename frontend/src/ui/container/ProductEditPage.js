@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchProduct} from '../../reducers/product';
-import {fetchProductOptionList} from '../../reducers/productOptionList';
-import {updateProductAction} from '../../reducers/updatingProduct';
+import {fetchProductAction, updateProductAction} from '../../reducers/products';
+import {fetchProductOptionsAction} from '../../reducers/productOptions';
 import {fetchCategoriesAction} from '../../reducers/categories';
 import {Link} from 'react-router';
 import ProductEditor from '../components/ProductEditor';
@@ -14,21 +13,19 @@ const ProductEditPage = class extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchProduct(this.props.params.productId);
-        this.props.fetchProductOptionList();
+        this.props.fetchProductAction(this.props.params.productId);
+        this.props.fetchProductOptionsAction();
         this.props.fetchCategoriesAction();
     }
 
     render() {
-        this.state = {
-            product: this.props.product
-        };
-
-        if (this.props.updatingProduct) {
-            return (<h1>Updating product</h1>)
-        } else if (this.props.loading || !this.state.product) {
+        if (this.props.loading) {
             return (<h1>Loading...</h1>)
         }
+
+        this.state = {
+            product: this.props.products[this.props.params.productId]
+        };
 
         return (
             <div>
@@ -61,17 +58,16 @@ const ProductEditPage = class extends Component {
 
 export default connect(
     state => ({
-        product: state.product.product,
-        loading: state.product.loading || state.productOptionList.loading || state.categories.loading,
-        productOptions: state.productOptionList.productOptions,
-        categories: state.categories.categories,
+        products: state.products.data,
+        loading:  state.products.loading || !state.categories || !state.productOptions,
+        productOptions: state.productOptions,
+        categories: state.categories,
         admin: state.authentication.admin,
-        updatingProduct: state.updatingProduct.loading,
-        errorMessage: state.updatingProduct.errorMessage
+        errorMessage: state.products.errorMessage
     }),
     {
-        fetchProduct,
-        fetchProductOptionList,
+        fetchProductAction,
+        fetchProductOptionsAction,
         fetchCategoriesAction,
         updateProductAction
     }

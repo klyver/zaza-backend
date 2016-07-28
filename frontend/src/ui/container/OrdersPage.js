@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchOrderList, confirmOrderItemAction, createTestOrderAction} from '../../reducers/ordersList';
+import {fetchOrdersAction, confirmOrderItemAction, createTestOrderAction} from '../../reducers/orders';
 
 const OrdersPage = class extends Component {
 
     componentDidMount() {
-        this.props.fetchOrderList();
+        this.props.fetchOrdersAction();
     }
 
     render() {
-        if (this.props.loading) {
+        if (this.props.orders == null) {
             return <h1>Loading...</h1>
         }
 
@@ -59,14 +59,13 @@ const OrdersPage = class extends Component {
 
 export default connect(
     state => ({
-        loading: state.ordersList.loading,
-        orders: state.ordersList.orders,
+        orders: state.orders,
         admin: state.authentication.admin,
         manufacturer: state.authentication.manufacturer
     }),
     {
         createTestOrderAction,
-        fetchOrderList,
+        fetchOrdersAction,
         confirmOrderItemAction
     }
 )(OrdersPage);

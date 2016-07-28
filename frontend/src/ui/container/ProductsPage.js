@@ -1,17 +1,24 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchProductList} from '../../reducers/productList';
+import {fetchProductsAction} from '../../reducers/products';
 import NavLink from '../components/NavLink';
 
 const ProductsPage = class extends Component {
 
     componentDidMount() {
-        this.props.fetchProductList();
+        this.props.fetchProductsAction();
     }
 
     render() {
-        if (this.props.loading) {
+        if (this.props.errorMessage) {
+            return <div style={{color: 'RED'}}>{this.props.errorMessage}</div>
+        } else if (this.props.loading) {
             return <h1>Loading...</h1>
+        }
+
+        const products = [];
+        for(const p in this.props.products) {
+            products.push(this.props.products[p]);
         }
 
         return (
@@ -31,7 +38,8 @@ const ProductsPage = class extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {this.props.products.map((product, index) => (
+                    {
+                        products.map((product, index) => (
                         <tr
                             key={index}
                         >
@@ -54,11 +62,11 @@ const ProductsPage = class extends Component {
 
 export default connect(
     state => ({
-        products: state.productList.products,
-        loading: state.productList.loading,
+        loading: state.products.loading,
+        products: state.products.data,
         admin: state.authentication.admin,
         manufacturer: state.authentication.manufacturer
     }),
-    {fetchProductList}
+    {fetchProductsAction}
 )(ProductsPage);
 

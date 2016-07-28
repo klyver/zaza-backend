@@ -1,6 +1,8 @@
-const FETCH = 'categories/FETCH';
-const FETCH_SUCCESS = 'categories/FETCH_SUCCESS';
-const FETCH_FAIL = 'categories/FETCH_FAIL';
+import {combineReducers} from 'redux';
+
+const FETCH = 'productOptions/FETCH';
+const FETCH_SUCCESS = 'productOptions/FETCH_SUCCESS';
+const FETCH_FAIL = 'productOptions/FETCH_FAIL';
 
 // Reducer
 export default (state = null, action) => {
@@ -13,11 +15,11 @@ export default (state = null, action) => {
         default:
             return state;
     }
-};
+}
 
 // Actions
-export const fetchCategoriesAction = () => ({
+export const fetchProductOptionsAction = () => ({
     types: [FETCH, FETCH_SUCCESS, FETCH_FAIL],
-    promise: client => client.get('/api/categories')
+    promise: client => client.get('/api/productOptions')
 });
 

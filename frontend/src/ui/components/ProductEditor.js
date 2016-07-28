@@ -18,6 +18,7 @@ export default ({product, productOptions, categories, updateProduct, admin, erro
                     mainCategory = main;
                     subCategory = sub;
                     subSubCategory = subSub;
+                    product.categoryId = subSub.id;
                 }
             }
         }
@@ -31,50 +32,88 @@ export default ({product, productOptions, categories, updateProduct, admin, erro
         <div>
             {errorMessage ? <div style={{color: 'RED'}}>{errorMessage}</div> : null}
 
-            {admin ? <div>Manufacturer: {product.manufacturer}</div> : null}
-            <div>sourceId:
-                <TextInput value={product.sourceId} onChange={(newSourceId) => {
-                    product.sourceId = newSourceId;
-                    updateProduct(product);
-                }}/>
+            {admin ?
+                <div>
+                    <b style={{width: '200px', float: 'left'}}>Manufacturer:</b>
+                    <span>{product.manufacturer}</span>
+                </div>
+                : null}
+            <div>
+                <b style={{width: '200px', float: 'left'}}>sourceId:</b>
+                <TextInput
+                    value={product.sourceId}
+                    onChange={(newSourceId) => {
+                        product.sourceId = newSourceId;
+                        updateProduct(product);
+                    }}
+                />
             </div>
-            <div>name:
-                <TextInput value={product.name} onChange={(newValue) => {
-                    product.name = newValue;
-                    updateProduct(product);
-                }}/>
+            <div>
+                <b style={{width: '200px', float: 'left'}}>name:</b>
+                <TextInput
+                    value={product.name}
+                    onChange={(newValue) => {
+                        product.name = newValue;
+                        updateProduct(product);
+                    }}
+                />
             </div>
-            {admin ? <div>nameMandarin:
-                <TextInput value={product.nameMandarin} onChange={(newValue) => {
-                    product.nameMandarin = newValue;
-                    updateProduct(product);
-                }}/>
-            </div> : null}
-            <div>description:
-                <TextArea value={product.description} onChange={(newValue) => {
-                    product.description = newValue;
-                    updateProduct(product);
-                }}/>
+            {admin ?
+                <div>
+                    <b style={{width: '200px', float: 'left'}}>nameMandarin:</b>
+                    <TextInput
+                        value={product.nameMandarin}
+                        onChange={(newValue) => {
+                            product.nameMandarin = newValue;
+                            updateProduct(product);
+                        }}
+                    />
+                </div>
+                : null}
+            <div>
+                <b style={{width: '200px', float: 'left'}}>description:</b>
+                <TextArea
+                    value={product.description}
+                    onChange={(newValue) => {
+                        product.description = newValue;
+                        updateProduct(product);
+                    }}
+                />
             </div>
-            {admin ? <div>descriptionMandarin:
-                <TextArea value={product.descriptionMandarin} onChange={(newValue) => {
-                    product.descriptionMandarin = newValue;
-                    updateProduct(product);
-                }}/>
-            </div> : null}
-            <div>longDescription:
-                <TextArea value={product.longDescription} onChange={(newValue) => {
-                    product.longDescription = newValue;
-                    updateProduct(product);
-                }}/>
+            {admin ?
+                <div>
+                    <b style={{width: '200px', float: 'left'}}>descriptionMandarin:</b>
+                    <TextArea
+                        value={product.descriptionMandarin}
+                        onChange={(newValue) => {
+                            product.descriptionMandarin = newValue;
+                            updateProduct(product);
+                        }}
+                    />
+                </div>
+                : null}
+            <div>
+                <b style={{width: '200px', float: 'left'}}>longDescription:</b>
+                <TextArea
+                    value={product.longDescription}
+                    onChange={(newValue) => {
+                        product.longDescription = newValue;
+                        updateProduct(product);
+                    }}
+                />
             </div>
-            {admin ? <div>longDescriptionMandarin:
-                <TextArea value={product.longDescriptionMandarin} onChange={(newValue) => {
-                    product.longDescriptionMandarin = newValue;
-                    updateProduct(product);
-                }}/>
-            </div> : null}
-
+            {admin ?
+                <div>
+                    <b style={{width: '200px', float: 'left'}}>longDescriptionMandarin:</b>
+                    <TextArea
+                        value={product.longDescriptionMandarin}
+                        onChange={(newValue) => {
+                            product.longDescriptionMandarin = newValue;
+                            updateProduct(product);
+                        }}
+                    />
+                </div>
+                : null}
 
             <h3>Categories</h3>
             <Dropdown

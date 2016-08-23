@@ -27,6 +27,12 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
                 .addResourceLocations("classpath:/static/")
                 .resourceChain(false)
                 .addResolver(new PushStateResourceResolver());
+
+        // the next two resource handlers are needed by Swagger
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     private class PushStateResourceResolver implements ResourceResolver {

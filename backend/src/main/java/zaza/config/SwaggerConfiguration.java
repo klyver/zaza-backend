@@ -8,6 +8,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
@@ -48,7 +49,12 @@ public class SwaggerConfiguration {
     }
 
     private Predicate<String> supplierPaths() {
-        return (input -> input.startsWith("/api/categories") || input.startsWith("/api/products") || input.startsWith("/api/productOptions") || input.startsWith("/api/order"));
+        return or(
+                regex("/api/categories.*"),
+                regex("/api/products.*"),
+                regex("/api/productOptions.*"),
+                regex("/api/order.*")
+        );
     }
 
 }

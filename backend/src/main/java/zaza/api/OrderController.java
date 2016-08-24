@@ -24,12 +24,16 @@ import java.util.stream.Collectors;
 @Transactional
 public class OrderController {
 
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final SkuRepository skuRepository;
+
     @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-    @Autowired
-    private SkuRepository skuRepository;
+    public OrderController(OrderRepository orderRepository, OrderItemRepository orderItemRepository, SkuRepository skuRepository) {
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.skuRepository = skuRepository;
+    }
 
     @RequestMapping(value = "/api/orderItems", method = RequestMethod.GET)
     public List<OrderItem> getProducts(HttpSession session) {

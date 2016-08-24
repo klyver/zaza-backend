@@ -13,8 +13,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class CategoryController {
 
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    private CategoryRepository categoryRepository;
+    public CategoryController(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @RequestMapping(value = "/api/categories/{categoryId}", method = RequestMethod.GET)
     public Category getCategory(@PathVariable String categoryId) {

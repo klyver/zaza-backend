@@ -18,11 +18,15 @@ import javax.servlet.http.HttpSession;
 @RestController()
 @RequestMapping("/api/session")
 public class AuthenticationResource {
-    @Autowired
-    AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public AuthenticationResource(AuthenticationManager authenticationManager, UserRepository userRepository) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public User login(@RequestBody Credentials credentials, HttpSession httpSession) {

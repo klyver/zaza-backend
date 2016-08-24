@@ -26,25 +26,28 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ProductOptionXrefRepository productOptionXrefRepository;
-    @Autowired
-    private SkuProductOptionValueXrefRepository skuProductOptionValueXrefRepository;
-    @Autowired
-    private SkuRepository skuRepository;
-    @Autowired
-    private ProductOptionRepository productOptionRepository;
-    @Autowired
-    private ProductOptionValueRepository productOptionValueRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-    @Autowired
-    private ProductAttributeRepository productAttributeRepository;
+    private final ProductRepository productRepository;
+    private final ProductOptionXrefRepository productOptionXrefRepository;
+    private final SkuProductOptionValueXrefRepository skuProductOptionValueXrefRepository;
+    private final SkuRepository skuRepository;
+    private final ProductOptionRepository productOptionRepository;
+    private final ProductOptionValueRepository productOptionValueRepository;
+    private final CategoryRepository categoryRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final ProductAttributeRepository productAttributeRepository;
 
+    @Autowired
+    public ProductController(ProductRepository productRepository, ProductOptionXrefRepository productOptionXrefRepository, SkuProductOptionValueXrefRepository skuProductOptionValueXrefRepository, SkuRepository skuRepository, ProductOptionRepository productOptionRepository, ProductOptionValueRepository productOptionValueRepository, CategoryRepository categoryRepository, OrderItemRepository orderItemRepository, ProductAttributeRepository productAttributeRepository) {
+        this.productRepository = productRepository;
+        this.productOptionXrefRepository = productOptionXrefRepository;
+        this.skuProductOptionValueXrefRepository = skuProductOptionValueXrefRepository;
+        this.skuRepository = skuRepository;
+        this.productOptionRepository = productOptionRepository;
+        this.productOptionValueRepository = productOptionValueRepository;
+        this.categoryRepository = categoryRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.productAttributeRepository = productAttributeRepository;
+    }
 
     @RequestMapping(value = "/api/products", method = RequestMethod.GET)
     public List<Product> getProducts(HttpSession session) {

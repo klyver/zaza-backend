@@ -15,8 +15,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductOptionController {
 
-    @Autowired
     private ProductOptionRepository productOptionRepository;
+
+    @Autowired
+    public ProductOptionController(ProductOptionRepository productOptionRepository) {
+        this.productOptionRepository = productOptionRepository;
+    }
 
     @RequestMapping(value = "/api/productOptions", method = RequestMethod.GET)
     public List<ProductOption> getProductOptions() {

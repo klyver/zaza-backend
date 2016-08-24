@@ -1,6 +1,7 @@
 package zaza.api.jsonmodel;
 
-import zaza.model.catalog.Dimension;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import zaza.model.catalog.SkuProductOptionValueXref;
 
 import java.math.BigDecimal;
@@ -8,14 +9,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiModel
 public class Sku {
+    @ApiModelProperty(required = true)
     private String id;
+    @ApiModelProperty(required = true)
     private String sourceId;
+    @ApiModelProperty(required = true)
     private boolean defaultSku;
+    @ApiModelProperty(required = true)
     private Dimension dimension;
+    @ApiModelProperty(required = true)
     private BigDecimal weight;
+    @ApiModelProperty(required = true)
     private BigDecimal price;
+    @ApiModelProperty(required = true)
     private Long quantityInStock;
+    @ApiModelProperty(required = true)
     private List<ProductOptionValue> productOptionValues;
 
     public Sku() {
@@ -25,7 +35,7 @@ public class Sku {
         this.id = sku.getId().toString();
         this.sourceId = sku.getSourceId();
         this.defaultSku = sku.isDefaultSku();
-        this.dimension = sku.getDimension();
+        this.dimension = new Dimension(sku.getDimension());
         this.weight = sku.getWeight();
         this.price = sku.getPrice();
         this.quantityInStock = sku.getQuantityInStock();
@@ -43,7 +53,7 @@ public class Sku {
 
     public zaza.model.catalog.Sku toDomainModel() {
         Long idAsLong = id != null ? Long.parseLong(id) : null;
-        return new zaza.model.catalog.Sku(idAsLong, sourceId, defaultSku, new Dimension(dimension.getWidth(), dimension.getHeight(), dimension.getDepth()), weight, price, quantityInStock);
+        return new zaza.model.catalog.Sku(idAsLong, sourceId, defaultSku, new zaza.model.catalog.Dimension(dimension.getWidth(), dimension.getHeight(), dimension.getDepth()), weight, price, quantityInStock);
     }
 
     public String getId() {

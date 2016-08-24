@@ -1,12 +1,19 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiModel
 public class ProductOption {
 
+    @ApiModelProperty(required = true)
     private String id;
+    @ApiModelProperty(required = true)
     private String label;
+    @ApiModelProperty(required = true)
     private List<ProductOptionValue> productOptionValues;
 
     public ProductOption() {

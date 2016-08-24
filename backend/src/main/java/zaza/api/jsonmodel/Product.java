@@ -1,28 +1,42 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import zaza.model.catalog.ProductOptionXref;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiModel
 public class Product {
+    @ApiModelProperty(required = true)
     private String id;
+    @ApiModelProperty(required = true)
     private String sourceId;
+    @ApiModelProperty(required = true)
     private boolean approved;
 
+    @ApiModelProperty(required = true)
     private String manufacturer;
+    @ApiModelProperty(required = true)
     private String name;
 
     private String nameMandarin;
+    @ApiModelProperty(required = true)
     private String description;
     private String descriptionMandarin;
+    @ApiModelProperty(required = true)
     private String longDescription;
     private String longDescriptionMandarin;
 
+    @ApiModelProperty(required = true)
     private String categoryId;
+    @ApiModelProperty(required = true)
     private List<ProductAttribute> productAttributes;
+    @ApiModelProperty(required = true)
     private List<Sku> skus;
+    @ApiModelProperty(required = true)
     private List<ProductOption> productOptions;
 
     public Product() {

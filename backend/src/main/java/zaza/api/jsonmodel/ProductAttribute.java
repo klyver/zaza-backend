@@ -1,8 +1,14 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class ProductAttribute {
 
+    @ApiModelProperty(required = true)
     private String name;
+    @ApiModelProperty(required = true)
     private String value;
 
     public ProductAttribute() {

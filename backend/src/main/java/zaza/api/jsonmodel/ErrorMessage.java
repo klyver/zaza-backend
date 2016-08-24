@@ -1,7 +1,13 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class ErrorMessage {
+    @ApiModelProperty(required = true)
     private String message;
+    @ApiModelProperty(required = true)
     private String messageKey;
 
     public ErrorMessage() {

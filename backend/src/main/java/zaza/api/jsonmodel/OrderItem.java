@@ -1,14 +1,23 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import zaza.model.order.OrderItemStatus;
 
+@ApiModel
 public class OrderItem {
 
+    @ApiModelProperty(required = true)
     private String orderId;
+    @ApiModelProperty(required = true)
     private String id;
+    @ApiModelProperty(required = true)
     private String skuId;
+    @ApiModelProperty(required = true)
     private String skuSourceId;
+    @ApiModelProperty(required = true)
     private int quantity;
+    @ApiModelProperty(required = true)
     private OrderItemStatus status;
 
     public OrderItem() {

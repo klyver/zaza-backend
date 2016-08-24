@@ -1,12 +1,20 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiModel
 public class Category {
 
+    @ApiModelProperty(required = true)
     private String id;
+    @ApiModelProperty(required = true)
     private String name;
+    @ApiModelProperty(required = true)
     private List<Category> children;
 
     public Category() {

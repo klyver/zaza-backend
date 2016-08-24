@@ -1,8 +1,14 @@
 package zaza.api.jsonmodel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class ProductOptionValue {
 
+    @ApiModelProperty(required = true)
     private String id;
+    @ApiModelProperty(required = true)
     private String attributeValue;
 
     public ProductOptionValue() {

@@ -98,9 +98,8 @@ public class ProductController {
         User user = (User) session.getAttribute("user");
         zaza.model.catalog.Product product = productRepository.findOne(Long.parseLong(productId));
         updateProductWithResponseBodyData(product, responseBody, user);
-        product = productRepository.save(product);
         updateProductAttributes(product, responseBody);
-
+        product = productRepository.save(product);
 
         //////////////////////////////////////////////
         Map<ProductOptionXref, Boolean> foundProductOptions = new HashMap<>();
@@ -150,13 +149,14 @@ public class ProductController {
             sku.setProduct(product);
             skuRepository.save(sku);
 
+            sku.getProductOptionValueXrefs().clear();
             for (ProductOptionValue productOptionValueJson : jsonSku.getProductOptionValues()) {
                 zaza.model.catalog.ProductOptionValue productOptionValue = productOptionValueRepository.findOne(Long.parseLong(productOptionValueJson.getId()));
                 List<SkuProductOptionValueXref> existingSkuProductOptionValueXref = skuProductOptionValueXrefRepository.findBySkuAndProductOptionValue(sku, productOptionValue);
                 if (!existingSkuProductOptionValueXref.isEmpty()) {
                     foundSkuProductOptionValueXrefs.put(existingSkuProductOptionValueXref.get(0), true);
                 } else {
-                    skuProductOptionValueXrefRepository.save(new SkuProductOptionValueXref(sku, productOptionValue));
+                    SkuProductOptionValueXref newSkuProductOptionValueXref = skuProductOptionValueXrefRepository.save(new SkuProductOptionValueXref(sku, productOptionValue));
                 }
             }
         }
@@ -206,7 +206,7 @@ public class ProductController {
 
         if (user.isAdmin()) {
             product.setNameMandarin(responseBody.getNameMandarin());
-            product.setDescriptionMandarin(responseBody.getNameMandarin());
+            product.setDescriptionMandarin(responseBody.getDescriptionMandarin());
             product.setLongDescriptionMandarin(responseBody.getLongDescriptionMandarin());
             product.setApproved(responseBody.isApproved());
         } else {

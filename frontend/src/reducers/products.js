@@ -96,7 +96,11 @@ export const fetchProductAction = (productId) => ({
 export const updateProductAction = (product) => ({
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
     promise: client => client.put(`/api/products/${product.id}`, product),
-    productId: product.id
+    productId: product.id,
+    afterSuccess: (dispatch, getState, response) => {
+        console.log('afterSuccess');
+        dispatch(fetchProductAction(product.id));
+    }
 });
 
 export const createProductAction = (product) => ({

@@ -22,9 +22,10 @@ public class PersistenceConfig implements TransactionManagementConfigurer {
 
     @Bean
     public DataSource configureDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        final String url = EnvironmentHelper.isDevelopment() ? "jdbc:mysql://localhost/zaza" : "jdbc:mysql://130.211.59.16/zaza";
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://130.211.59.16/zaza");
+        dataSource.setUrl(url);
         dataSource.setUsername("zaza");
         dataSource.setPassword("zaza");
         return dataSource;
